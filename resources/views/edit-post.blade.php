@@ -1,19 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous">
+    </script>
 </head>
+
 <body>
-  <h1>Edit Post</h1>
-  <form action="{{URL::to('edit-post/'.$post->id)}}" method="POST">
-    @csrf
-    @method("PUT")
-    <input type="text" name="title" value="{{$post->title}}">
-    <textarea name="body">{{$post->body}}</textarea>
-    <button>Save Changes</button>
-  </form>
+    <div class="m-3 border border-3 border-black p-3">
+        <h2 class="text-center">Edit Post</h2>
+        <form action="{{ URL::to('edit-post/' . $post->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <label for="post_title" class="form-label">Title</label>
+            <input type="text" name="title" value="{{ $post->title }}" class="form-control" id="post_title" placeholder="post title...">
+            <label for="post_body" class="form-label">Body</label>
+            <textarea class="form-control" name="body" id="post_body" placeholder="post content...">{{ $post->body }}</textarea>
+            <div class="d-flex justify-content-center">
+                <button class="p-2 btn btn-secondary mt-2">Save Changes</button>
+            </div>
+        </form>
+    </div>
 </body>
+
 </html>
