@@ -18,13 +18,55 @@
         <div class="d-flex justify-content-center p-2">
             <h3>{{ $user['name'] }} is Logged In</h3>
         </div>
-        <div class="d-flex justify-content-center p-4">
+
+        <div class="d-flex justify-content-center p-4 gap-2">
+            <button class="show-user-info btn btn-success">Show User Info</button>
+            <form action="{{ URL::to('feed-page') }}">
+                @csrf
+                <button class="p-2 btn btn-warning">Go to Feed</button>
+            </form>
             <form action="{{ URL::to('logout') }}" method="POST">
                 @csrf
                 <button class="p-2 btn btn-danger">Log Out</button>
             </form>
         </div>
+        <div class="d-flex flex-column align-items-center">
+            <div class="response_div border border-1 border-black rounded p-2 m-2 d-none"></div>
+        </div>
+        <div class="feed_div"></div>
+        <script>
+            $(document).ready(function() {
+                $(".show-user-info").click(function() {
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ URL::to('temp-page') }}",
+                        success: function(response) {
+                            let user_data = response.data;
+                            console.log("User data:", response.data);
+                            $(".response_div").empty();
+                            for (let key in user_data) {
+                                $(".response_div").removeClass("d-none");
+                                $(".response_div").append("<p><strong>" + key + ":</strong> " +
+                                    user_data[key] + "</p>");
 
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error("Error:", xhr);
+                        }
+                    });
+                });
+            });
+        </script>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="m-3 border border-3 border-black p-3">
             <h2 class="text-center">Create a New Post</h2>
             <form action="{{ URL::to('create-post') }}" method="POST">
@@ -34,7 +76,7 @@
                 <label for="post_body" class="form-label">Body</label>
                 <textarea class="form-control" name="body" id="post_body" placeholder="post content..."></textarea>
                 <div class="d-flex justify-content-center">
-                    <button class="p-2 btn btn-success mt-2">Save Post</button>
+                    <button class="p-2 btn btn-success mt-2">Create Post</button>
                 </div>
             </form>
         </div>
@@ -44,10 +86,10 @@
         <div class="mb-3">
         </div>
         <div class="d-flex flex-column m-3 justify-content-center align-items-center m-3 border border-3 border-black p-3">
-          <div class="d-flex gap-2">
-            <div class="btn btn-warning mb-3 show_post_btn">Show All Posts by {{ $user['name'] }}</div>
-            <div class="btn btn-danger mb-3 hide_post_btn">Hide All Posts by {{ $user['name'] }}</div>
-          </div>
+            <div class="d-flex gap-2">
+                <div class="btn btn-warning mb-3 show_post_btn">Show All Posts by {{ $user['name'] }}</div>
+                <div class="btn btn-danger mb-3 hide_post_btn">Hide All Posts by {{ $user['name'] }}</div>
+            </div>
             @foreach ($posts as $post)
                 <div class="card mb-2 border border-1 border-black p-2" style="width: 25rem;">
                     <div class="d-flex flex-column justify-content-center align-items-center gap-3">
@@ -97,12 +139,12 @@
                     <div class="mb-3">
                         <label for="register_email" class="form-label">Email</label>
                         <input name="email" type="email" class="form-control" id="register_email"
-                        placeholder="Enter your email">
+                            placeholder="Enter your email">
                     </div>
                     <div class="mb-3">
                         <label for="register_password" class="form-label">Password</label>
                         <input name="password" type="password" class="form-control" id="register_password"
-                        placeholder="Enter password">
+                            placeholder="Enter password">
                     </div>
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary px-4">Register</button>
@@ -118,7 +160,7 @@
                     <div class="mb-3">
                         <label for="login_name" class="form-label">Name</label>
                         <input name="loginname" type="text" class="form-control" id="login_name"
-                        placeholder="Enter your name">
+                            placeholder="Enter your name">
                     </div>
                     <div class="mb-3">
                         <label for="login_password" class="form-label">Password</label>
@@ -145,15 +187,15 @@
     </script>
     <script>
         $(document).ready(function() {
-          $(".hide_btn").click(function() {
+            $(".hide_btn").click(function() {
                 $(this).closest(".card").hide("slow");
-              })
-          $(".show_post_btn").click(function() {
-            $(".card").show("slow")
-          })
-          $(".hide_post_btn").click(function() {
-            $(".card").hide("slow")
-          })
+            })
+            $(".show_post_btn").click(function() {
+                $(".card").show("slow")
+            })
+            $(".hide_post_btn").click(function() {
+                $(".card").hide("slow")
+            })
         })
     </script>
 </body>

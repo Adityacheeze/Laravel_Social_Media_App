@@ -24,7 +24,7 @@
             <label for="post_body" class="form-label">Body</label>
             <textarea class="form-control" name="body" id="post_body" placeholder="post content...">{{ $post->body }}</textarea>
             <div class="d-flex justify-content-center">
-                <button class="p-2 btn btn-secondary mt-2">Save Changes</button>
+                <button class="p-2 btn btn-success mt-2">Save Changes</button>
             </div>
         </form>
     </div>

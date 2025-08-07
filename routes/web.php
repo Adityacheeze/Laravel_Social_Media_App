@@ -33,3 +33,6 @@ Route::post('/create-post', [PostController::class, 'createPost']);
 Route::get('/edit-post/{post}', [PostController::class, 'showEditScreen']);
 Route::put('/edit-post/{post}', [PostController::class, 'updatePost']);
 Route::delete('/delete-post/{post}', [PostController::class, 'deletePost']);
+
+Route::get('/temp-page', [PostController::class, 'handleTempPage']);
+Route::get('/feed-page', [PostController::class, 'handleFeedRequest']);

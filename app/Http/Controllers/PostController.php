@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class PostController extends Controller
 {
-    public function createPost(Request $request) {
+    public function createPost(Request $request)
+    {
         $incommingFields = $request->validate([
             'title' => 'required',
             'body' => 'required',
@@ -18,14 +21,16 @@ class PostController extends Controller
         Post::create($incommingFields);
         return redirect('/');
     }
-    public function showEditScreen(Post $post) {
-        if(auth()->user()->id !== $post["user_id"]){
+    public function showEditScreen(Post $post)
+    {
+        if (auth()->user()->id !== $post["user_id"]) {
             return redirect("/");
         }
         return view('edit-post', ['post' => $post]);
     }
-    public function updatePost(Post $post, Request $request) {
-        if(auth()->user()->id !== $post["user_id"]){
+    public function updatePost(Post $post, Request $request)
+    {
+        if (auth()->user()->id !== $post["user_id"]) {
             return redirect("/");
         }
         $incommingFields = $request->validate([
@@ -37,10 +42,21 @@ class PostController extends Controller
         $post->update($incommingFields);
         return redirect('/');
     }
-    public function deletePost(Post $post) {
-        if(auth()->user()->id === $post["user_id"]){
+    public function deletePost(Post $post)
+    {
+        if (auth()->user()->id === $post["user_id"]) {
             $post->delete();
         }
         return redirect("/");
+    }
+    public function handleTempPage()
+    {
+        $data = auth()->user();
+        return response()->json(['message' => 'Data received', 'data' => $data]);
+    }
+    public function handleFeedRequest()
+    {
+       $posts = Post::orderBy('created_at', 'desc')->get();
+        return view('feed', ["posts" => $posts]);
     }
 }
