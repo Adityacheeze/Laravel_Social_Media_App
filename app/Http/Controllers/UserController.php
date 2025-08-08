@@ -47,9 +47,40 @@ class UserController extends Controller
         $user = auth()->user();
         $extension = $request->file('photo')->getClientOriginalExtension();
         $filename = $user->id . '.' . $extension;
-        $path = $request->file('photo')->storeAs('profile_photos',$filename ,'public');
+        $path = $request->file('photo')->storeAs('profile_photos', $filename, 'public');
         $user->photoURL = $path;
         $user->save();
         return redirect("/");
+    }
+    public function uploadPDF(Request $request)
+    {
+        $incomingFields = $request->validate([
+            'pdf' => 'required|mimes:pdf|max:10240',
+        ]);
+        $user = auth()->user();
+        $extension = $request->file('pdf')->getClientOriginalExtension();
+        $filename = $user->id . '.' . $extension;
+        $path = $request->file('pdf')->storeAs('pdfs', $filename, 'public');
+        $user->pdf = $path;
+        $user->save();
+        return redirect("/");
+    }
+    public function viewPDF()
+    {
+        $user = auth()->user();
+
+        if (! $user || ! $user->pdf) {
+            abort(404, 'No PDF uploaded.');
+        }
+
+        $file = storage_path('app/public/' . $user->pdf);
+
+        if (! file_exists($file)) {
+            abort(404, 'File not found.');
+        }
+
+        header('Content-Type: application/pdf');
+        @readfile($file);
+        redirect("/");
     }
 }

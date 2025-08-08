@@ -40,7 +40,9 @@
         </div>
         {{-- SHOW USER INFO --}}
         <div class="d-flex flex-column align-items-center">
-            <div class="response_div border border-1 border-black rounded p-2 m-2 d-none"></div>
+            <div class="response_div border border-1 border-black rounded p-2 m-2 d-none">
+            </div>
+            <button class="btn btn-danger close_user_info d-none">Close</button>
         </div>
         <script>
             $(document).ready(function() {
@@ -51,8 +53,9 @@
                         success: function(response) {
                             let user_data = response.data;
                             $(".response_div").empty();
+                            $(".close_user_info").removeClass("d-none");
                             for (let key in user_data) {
-                                $(".response_div").toggleClass("d-none");
+                                $(".response_div").removeClass("d-none");
                                 $(".response_div").append("<p><strong>" + key + ":</strong> " +
                                     user_data[key] + "</p>");
 
@@ -63,8 +66,9 @@
                         }
                     });
                 });
-                $(".edit-profile").click(function() {
-
+                $(".close_user_info").click(function() {
+                    $(".response_div").addClass("d-none");
+                    $(this).addClass("d-none");
                 })
             });
         </script>
@@ -78,6 +82,42 @@
                 </ul>
             </div>
         @endif
+        {{-- Edit Profile --}}
+        <div class="m-3 border border-3 border-black p-3 edit-profile d-none">
+            <h2 class="text-center">Edit Profile</h2>
+            <form action="{{ URL::to('edit-profile') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <label for="edit_profile_pic" class="form-label">Profile Photo</label>
+                <input type="file" name="photo" class="form-control" id="edit_profile_pic" accept="image/*">
+                <div class="d-flex justify-content-center">
+                    <button class="p-2 btn btn-success mt-2">Update Profile</button>
+                </div>
+            </form>
+        </div>
+        {{-- UPLOAD PDF --}}
+        <div class="m-3 border border-3 border-black p-3 upload-pdf">
+            <h2 class="text-center">Upload a PDF</h2>
+
+            <form action="{{ url('upload-pdf') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <label for="upload-pdf-form" class="form-label">Upload PDF</label>
+                <input type="file" name="pdf" class="form-control" id="upload-pdf-form" accept="application/pdf">
+                <div class="d-flex justify-content-center gap-2 mt-2">
+                    <button type="submit" class="p-2 btn btn-success">Upload PDF</button>
+                </div>
+            </form>
+
+            <div class="d-flex justify-content-center gap-2 mt-3">
+                @if ($user->pdf)
+                    <!-- opens in a new tab -->
+                    <a href="{{ URL::to('view-pdf') }}" class="p-2 btn btn-warning" target="_blank" rel="noopener">View
+                        PDF</a>
+                @else
+                    <button type="button" class="p-2 btn btn-warning" disabled>View PDF</button>
+                @endif
+            </div>
+        </div>
+
         {{-- Create a New Post --}}
         <div class="m-3 border border-3 border-black p-3">
             <h2 class="text-center">Create a New Post</h2>
@@ -89,18 +129,6 @@
                 <textarea class="form-control" name="body" id="post_body" placeholder="post content..."></textarea>
                 <div class="d-flex justify-content-center">
                     <button class="p-2 btn btn-success mt-2">Create Post</button>
-                </div>
-            </form>
-        </div>
-        {{-- Edit Profile --}}
-        <div class="m-3 border border-3 border-black p-3 edit-profile d-none">
-            <h2 class="text-center">Edit Profile</h2>
-            <form action="{{ URL::to('edit-profile') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <label for="edit_profile_pic" class="form-label">Profile Photo</label>
-                <input type="file" name="photo" class="form-control" id="edit_profile_pic" accept="image/*">
-                <div class="d-flex justify-content-center">
-                    <button class="p-2 btn btn-success mt-2">Update Profile</button>
                 </div>
             </form>
         </div>
@@ -124,17 +152,18 @@
                         <div class="card-body">
                             <h5 class="card-title text-center">{{ $post['title'] }}</h5>
                             <div class="position-absolute top-0 end-0 p-3">
-                            <div class="ratio ratio-1x1" style="width:45px;">
-                                <img src="{{ asset('storage/app/public/' . $user->photoURL) }}" alt="user_profile_pic"
-                                class="img-fluid d-block rounded-circle border border-1 border-black shadow object-fit-cover">
+                                <div class="ratio ratio-1x1" style="width:45px;">
+                                    <img src="{{ asset('storage/app/public/' . $user->photoURL) }}" alt="user_profile_pic"
+                                        class="img-fluid d-block rounded-circle border border-1 border-black shadow object-fit-cover">
+                                </div>
                             </div>
-                        </div>
                             <h6 class="card-subtitle mb-2 text-body-secondary text-center">By {{ $post->user->name }}</h6>
                             <p class="card-text">{{ $post['body'] }}</p>
                             <div class="d-flex flex-row justify-content-center align-items-center gap-1">
                                 <a class="card-link p-2 btn btn-success border border-black border-1"
                                     href="{{ URL::to('edit-post/' . $post->id) }}">EDIT</a>
-                                <form class="card-link" action="{{ URL::to('delete-post/' . $post->id) }}" method="POST">
+                                <form class="card-link" action="{{ URL::to('delete-post/' . $post->id) }}"
+                                    method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button
