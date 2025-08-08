@@ -10,7 +10,8 @@ use URL;
 
 class UserController extends Controller
 {
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $incommingFields = $request->validate([
             "name" => ["required", "min:3", "max:10", Rule::unique("users", "name")],
             "email" => ["required", "email", Rule::unique("users", "email")],
@@ -21,18 +22,32 @@ class UserController extends Controller
         auth()->login($user);
         return redirect("/");
     }
-    public function logout() {
+    public function logout()
+    {
         auth()->logout();
         return redirect("/");
     }
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $incommingFields = $request->validate([
             "loginname" => "required",
             "loginpassword" => "required",
         ]);
-        if(auth()->attempt(["name" => $incommingFields["loginname"], "password" => $incommingFields["loginpassword"]])){
+        if (auth()->attempt(["name" => $incommingFields["loginname"], "password" => $incommingFields["loginpassword"]])) {
             $request->session()->regenerate();
         }
+        return redirect("/");
+    }
+    public function editProfile(Request $request)
+    {
+        $incomingFields = $request->validate([
+            'photoURL' => 'required|string',
+        ]);
+
+        $user = auth()->user();
+        $user->photoURL = $incomingFields['photoURL'];
+        $user->save();
+
         return redirect("/");
     }
 }

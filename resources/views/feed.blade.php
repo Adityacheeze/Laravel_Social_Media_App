@@ -18,9 +18,9 @@
     <div class="d-flex flex-column align-items-center gap-4">
         <h1>Feed</h1>
         <a href="{{ URL::to('/') }}"><div class="btn btn-success home-btn">Back to home</div></a>
-       {{-- {{ dd($posts)}} --}}
         @foreach ($posts as $post)
-            <div class="card mb-2 border border-1 border-black p-2" style="width: 25rem;">
+            <div class="card mb-2 border border-1 border-black p-2 bg-warning bg-gradient
+" style="width: 25rem;">
                 <div class="d-flex flex-column justify-content-center align-items-center gap-3">
                     <div class="card-body">
                         <h5 class="card-title text-center">{{ $post['title'] }}</h5>
