@@ -55,8 +55,9 @@ class PostController extends Controller
         return response()->json(['message' => 'Data received', 'data' => $data]);
     }
     public function handleFeedRequest()
-    {
+    {   
+        $user = auth()->user();
        $posts = Post::orderBy('created_at', 'desc')->get();
-        return view('feed', ["posts" => $posts]);
+        return view('feed', ["posts" => $posts, "user" => $user]);
     }
 }

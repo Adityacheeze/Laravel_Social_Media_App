@@ -41,13 +41,15 @@ class UserController extends Controller
     public function editProfile(Request $request)
     {
         $incomingFields = $request->validate([
-            'photoURL' => 'required|string',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user = auth()->user();
-        $user->photoURL = $incomingFields['photoURL'];
+        $extension = $request->file('photo')->getClientOriginalExtension();
+        $filename = $user->id . '.' . $extension;
+        $path = $request->file('photo')->storeAs('profile_photos',$filename ,'public');
+        $user->photoURL = $path;
         $user->save();
-
         return redirect("/");
     }
 }

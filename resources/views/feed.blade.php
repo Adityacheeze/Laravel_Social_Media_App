@@ -15,15 +15,30 @@
 </head>
 
 <body>
+    <div class="position-absolute top-0 end-0 p-3">
+        <div class="ratio ratio-1x1" style="width:120px;">
+            <img src="{{ asset('storage/app/public/' . $user->photoURL) }}" alt="user_profile_pic"
+                class="img-fluid d-block rounded-circle border border-3 border-black shadow object-fit-cover">
+        </div>
+    </div>
+
+
     <div class="d-flex flex-column align-items-center gap-4">
         <h1>Feed</h1>
-        <a href="{{ URL::to('/') }}"><div class="btn btn-success home-btn">Back to home</div></a>
+        <a href="{{ URL::to('/') }}">
+            <div class="btn btn-success home-btn">Back to home</div>
+        </a>
         @foreach ($posts as $post)
-            <div class="card mb-2 border border-1 border-black p-2 bg-warning bg-gradient
-" style="width: 25rem;">
+            <div class="card mb-2 border border-1 border-black p-2 bg-info bg-gradient" style="width: 25rem;">
                 <div class="d-flex flex-column justify-content-center align-items-center gap-3">
                     <div class="card-body">
                         <h5 class="card-title text-center">{{ $post['title'] }}</h5>
+                        <div class="position-absolute top-0 end-0 p-3">
+                            <div class="ratio ratio-1x1" style="width:45px;">
+                                <img src="{{ asset('storage/app/public/' . $post->user->photoURL) }}" alt="user_profile_pic"
+                                class="img-fluid d-block rounded-circle border border-1 border-black shadow object-fit-cover">
+                            </div>
+                        </div>
                         <h6 class="card-subtitle mb-2 text-body-secondary text-center">By : {{ $post->user->name }}</h6>
                         <p class="card-text">{{ $post['body'] }}</p>
                         <p class="card-text">Created at : {{ $post['created_at'] }}</p>
@@ -34,11 +49,11 @@
         @endforeach
     </div>
     <script>
-      $(document).ready(function() {
-        $("home-btn").click(function() {
-          
+        $(document).ready(function() {
+            $("home-btn").click(function() {
+
+            })
         })
-      })
     </script>
 </body>
 

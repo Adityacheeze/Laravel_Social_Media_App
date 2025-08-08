@@ -15,14 +15,20 @@
 
 <body>
     @auth
+        {{-- USER OPTIONS --}}
         <div class="d-flex justify-content-center p-2">
             <h3>{{ $user['name'] }} is Logged In</h3>
         </div>
-        <img src="{{$user['photoURL']}}" alt="user_profile_pic" width="150px" class="position-absolute top-0 end-0 p-3">
+        {{-- PROFILE PICTURE --}}
+        <div class="position-absolute top-0 end-0 p-3">
+            <div class="ratio ratio-1x1" style="width:120px;">
+                <img src="{{ asset('storage/app/public/' . $user->photoURL) }}" alt="user_profile_pic"
+                    class="img-fluid d-block rounded-circle border border-3 border-black shadow object-fit-cover">
+            </div>
+        </div>
         <div class="d-flex justify-content-center p-4 gap-2">
-            <button class="show-user-info btn btn-success">Show User Info</button>
-            <button class="hide-user-info btn btn-secondary">Hide User Info</button>
-            <button class="edit-profile btn btn-info">Edit Profile Picture</button>
+            <button class="show-user-info btn btn-success">User Info</button>
+            <button class="edit-profile-btn btn btn-info">Edit Profile</button>
             <form action="{{ URL::to('feed-page') }}">
                 @csrf
                 <button class="p-2 btn btn-warning">Go to Feed</button>
@@ -32,6 +38,7 @@
                 <button class="p-2 btn btn-danger">Log Out</button>
             </form>
         </div>
+        {{-- SHOW USER INFO --}}
         <div class="d-flex flex-column align-items-center">
             <div class="response_div border border-1 border-black rounded p-2 m-2 d-none"></div>
         </div>
@@ -43,10 +50,9 @@
                         url: "{{ URL::to('temp-page') }}",
                         success: function(response) {
                             let user_data = response.data;
-                            console.log("User data:", response.data);
                             $(".response_div").empty();
                             for (let key in user_data) {
-                                $(".response_div").removeClass("d-none");
+                                $(".response_div").toggleClass("d-none");
                                 $(".response_div").append("<p><strong>" + key + ":</strong> " +
                                     user_data[key] + "</p>");
 
@@ -57,14 +63,12 @@
                         }
                     });
                 });
-                $(".hide-user-info").click(function() {
-                    $(".response_div").addClass("d-none");
-                })
                 $(".edit-profile").click(function() {
 
                 })
             });
         </script>
+        {{-- SHOW ERRORS --}}
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -88,22 +92,27 @@
                 </div>
             </form>
         </div>
-        <div class="m-3 border border-3 border-black p-3">
-            <h2 class="text-center">Edit Profile Picture</h2>
-            <form action="{{ URL::to('edit-profile') }}" method="POST">
+        {{-- Edit Profile --}}
+        <div class="m-3 border border-3 border-black p-3 edit-profile d-none">
+            <h2 class="text-center">Edit Profile</h2>
+            <form action="{{ URL::to('edit-profile') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <label for="edit_profile_pic" class="form-label">Profile Photo Url</label>
-                <input type="text" name="photoURL" class="form-control" id="edit_profile_pic" value="{{$user['photoURL']}}">
+                <label for="edit_profile_pic" class="form-label">Profile Photo</label>
+                <input type="file" name="photo" class="form-control" id="edit_profile_pic" accept="image/*">
                 <div class="d-flex justify-content-center">
                     <button class="p-2 btn btn-success mt-2">Update Profile</button>
                 </div>
             </form>
         </div>
-
-        <div class="mb-3">
-        </div>
-        <div class="mb-3">
-        </div>
+        <script>
+            $(document).ready(function() {
+                $(".edit-profile-btn").click(function() {
+                    $(".edit-profile").toggleClass("d-none");
+                    console.log("button was clicked");
+                })
+            })
+        </script>
+        {{-- SHOW USER POSTS --}}
         <div class="d-flex flex-column m-3 justify-content-center align-items-center m-3 border border-3 border-black p-3">
             <div class="d-flex gap-2">
                 <div class="btn btn-warning mb-3 show_post_btn">Show All Posts by {{ $user['name'] }}</div>
@@ -114,6 +123,12 @@
                     <div class="d-flex flex-column justify-content-center align-items-center gap-3">
                         <div class="card-body">
                             <h5 class="card-title text-center">{{ $post['title'] }}</h5>
+                            <div class="position-absolute top-0 end-0 p-3">
+                            <div class="ratio ratio-1x1" style="width:45px;">
+                                <img src="{{ asset('storage/app/public/' . $user->photoURL) }}" alt="user_profile_pic"
+                                class="img-fluid d-block rounded-circle border border-1 border-black shadow object-fit-cover">
+                            </div>
+                        </div>
                             <h6 class="card-subtitle mb-2 text-body-secondary text-center">By {{ $post->user->name }}</h6>
                             <p class="card-text">{{ $post['body'] }}</p>
                             <div class="d-flex flex-row justify-content-center align-items-center gap-1">
@@ -122,7 +137,8 @@
                                 <form class="card-link" action="{{ URL::to('delete-post/' . $post->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="p-2 btn btn-danger delete_button border border-black border-1">Delete</button>
+                                    <button
+                                        class="p-2 btn btn-danger delete_button border border-black border-1">Delete</button>
                                 </form>
                                 <div class="card-link p-2 btn btn-warning hide_btn border border-black border-1">HIDE</div>
                             </div>
@@ -131,6 +147,7 @@
                 </div>
             @endforeach
         </div>
+        {{-- TOAST FOR DELETE POST --}}
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
             <div id="deleteToast" class="toast align-items-center text-bg-danger border-0" role="alert"
                 aria-live="assertive" aria-atomic="true">
@@ -193,6 +210,7 @@
             </div>
         </div>
     @endauth
+    {{-- SCRIPTS --}}
     <script>
         $(document).ready(function() {
             $(".delete_button").click(function() {
