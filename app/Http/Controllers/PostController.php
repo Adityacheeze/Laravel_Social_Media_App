@@ -11,6 +11,9 @@ class PostController extends Controller
 {
     public function createPost(Request $request)
     {
+        if ($request->isMethod('get')) {
+            return view('create-post');
+        }
         $incommingFields = $request->validate([
             'title' => 'required',
             'body' => 'required',
@@ -62,5 +65,16 @@ class PostController extends Controller
         $user = auth()->user();
         $posts = Post::orderBy('created_at', 'desc')->get();
         return view('feed', ["posts" => $posts, "user" => $user]);
+    }
+    public function viewTable()
+    {
+        $posts = [];
+        $user = "";
+        if (auth()->check()) {
+            $posts = auth()->user()->userPosts()->latest()->get();
+            $user = auth()->user();
+            $users = User::all();
+        }
+        return view('table-view', ['posts' => $posts, 'user' => $user, 'users' => $users]);
     }
 }

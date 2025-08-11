@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
@@ -35,10 +36,11 @@ Route::get('/view-pdf', [UserController::class, 'viewPDF']);
 
 
 // POST CONTROLLER ROUTES
-Route::post('/create-post', [PostController::class, 'createPost']);
+Route::match(['get', 'post'], '/create-post', [PostController::class, 'createPost']);
 Route::get('/edit-post/{post}', [PostController::class, 'showEditScreen']);
 Route::put('/edit-post/{post}', [PostController::class, 'updatePost']);
 Route::delete('/delete-post/{post}', [PostController::class, 'deletePost']);
 
+Route::get('/table-details', [PostController::class, 'viewTable']);
 Route::get('/temp-page', [PostController::class, 'handleTempPage']);
 Route::get('/feed-page', [PostController::class, 'handleFeedRequest']);

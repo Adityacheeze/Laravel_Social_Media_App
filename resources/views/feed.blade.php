@@ -26,7 +26,10 @@
     <div class="d-flex flex-column align-items-center gap-4">
         <h1>Feed</h1>
         <a href="{{ URL::to('/') }}">
-            <div class="btn btn-success home-btn">Back to home</div>
+            <div class="btn btn-success">Back to home</div>
+        </a>
+        <a href="{{ URL::to('/table-details') }}">
+            <div class="btn btn-warning">see post details</div>
         </a>
         @foreach ($posts as $post)
             <div class="card mb-2 border border-1 border-black p-2 bg-info bg-gradient" style="width: 25rem;">
@@ -48,13 +51,6 @@
             </div>
         @endforeach
     </div>
-    <script>
-        $(document).ready(function() {
-            $("home-btn").click(function() {
-
-            })
-        })
-    </script>
 </body>
 
 </html>
