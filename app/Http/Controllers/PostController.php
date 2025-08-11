@@ -19,7 +19,10 @@ class PostController extends Controller
         $incommingFields['body'] = strip_tags($incommingFields['body']);
         $incommingFields['user_id'] = auth()->id();
         Post::create($incommingFields);
-        return redirect('/');
+        return  response()->json([
+            'success' => true,
+            'message' => 'Post created successfully!'
+        ]);
     }
     public function showEditScreen(Post $post)
     {
@@ -55,9 +58,9 @@ class PostController extends Controller
         return response()->json(['message' => 'Data received', 'data' => $data]);
     }
     public function handleFeedRequest()
-    {   
+    {
         $user = auth()->user();
-       $posts = Post::orderBy('created_at', 'desc')->get();
+        $posts = Post::orderBy('created_at', 'desc')->get();
         return view('feed', ["posts" => $posts, "user" => $user]);
     }
 }

@@ -94,6 +94,13 @@
                 </div>
             </form>
         </div>
+        <script>
+            $(document).ready(function() {
+                $(".edit-profile-btn").click(function() {
+                    $(".edit-profile").toggleClass("d-none");
+                })
+            })
+        </script>
         {{-- UPLOAD PDF --}}
         <div class="m-3 border border-3 border-black p-3 upload-pdf">
             <h2 class="text-center">Upload a PDF</h2>
@@ -109,7 +116,6 @@
 
             <div class="d-flex justify-content-center gap-2 mt-3">
                 @if ($user->pdf)
-                    <!-- opens in a new tab -->
                     <a href="{{ URL::to('view-pdf') }}" class="p-2 btn btn-warning" target="_blank" rel="noopener">View
                         PDF</a>
                 @else
@@ -121,22 +127,46 @@
         {{-- Create a New Post --}}
         <div class="m-3 border border-3 border-black p-3">
             <h2 class="text-center">Create a New Post</h2>
-            <form action="{{ URL::to('create-post') }}" method="POST">
+            <form>
                 @csrf
                 <label for="post_title" class="form-label">Title</label>
                 <input type="text" name="title" class="form-control" id="post_title" placeholder="post title...">
                 <label for="post_body" class="form-label">Body</label>
                 <textarea class="form-control" name="body" id="post_body" placeholder="post content..."></textarea>
                 <div class="d-flex justify-content-center">
-                    <button class="p-2 btn btn-success mt-2">Create Post</button>
+                    <button class="p-2 btn btn-success mt-2 create-post">Create Post</button>
                 </div>
             </form>
         </div>
         <script>
             $(document).ready(function() {
-                $(".edit-profile-btn").click(function() {
-                    $(".edit-profile").toggleClass("d-none");
-                    console.log("button was clicked");
+                $(".create-post").click(function(e) {
+                    e.preventDefault();
+                    var form = $(this).closest("form");
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ URL::to('create-post') }}",
+                        data: form.serialize(),
+                        success: function(response) {
+                            const toastE2 = document.getElementById("createPostToast");
+                            const toast = new bootstrap.Toast(toastE2, {
+                                delay: 3000
+                            });
+                            toast.show();
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1500);
+                        },
+                        error: function(xhr) {
+                            $(".create-post").closest("div").after(
+                                `<p class="text-danger mt-2 err-msg">Error Occured : ${xhr?.responseJSON?.message}</p>`
+                                );
+                            setTimeout(function() {
+                                $(".err-msg").remove();
+                            }, 2000);
+                            console.log("Error:", xhr);
+                        }
+                    })
                 })
             })
         </script>
@@ -183,6 +213,19 @@
                 <div class="d-flex">
                     <div class="toast-body">
                         Post Deleted!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        {{-- TOAST FOR CREATE POST --}}
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="createPostToast" class="toast align-items-center text-bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Post Created!
                     </div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
                         aria-label="Close"></button>
@@ -257,10 +300,10 @@
                 $(this).closest(".card").hide("slow");
             })
             $(".show_post_btn").click(function() {
-                $(".card").show("slow")
+                $(".card").show("slow");
             })
             $(".hide_post_btn").click(function() {
-                $(".card").hide("slow")
+                $(".card").hide("slow");
             })
         })
     </script>
