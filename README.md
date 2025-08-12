@@ -5,7 +5,7 @@ A simple Laravel application with user authentication and full CRUD functionalit
 ## 🚀 Features
 
 - 🔐 User Registration & Login
-- ✅ Authentication using Laravel Breeze or Laravel UI
+- ✅ Authentication using Laravel UI
 - 🧠 Create, Read, Update, Delete (CRUD) operations on posts
 - 📦 MySQL database integration
 - 👤 Each user can:
@@ -13,11 +13,13 @@ A simple Laravel application with user authentication and full CRUD functionalit
   - Edit and delete **only their own** posts
   - View their own posts
   - View posts by **all users** on a feed page
+  - Upload and view pdf
+  - Change Profile Picture
 
 ## 🛠️ Tech Stack
 
-- **Backend:** Laravel 10+
-- **Frontend:** Blade + Bootstrap (via CDN)
+- **Backend:** Laravel 8
+- **Frontend:** Blade + Bootstrap
 - **Database:** MySQL
 - **Authentication:** Laravel Auth Scaffolding
 
@@ -74,18 +76,6 @@ php artisan serve
 ```
 
 Visit `http://127.0.0.1:8000` in your browser.
-
----
-
-## 🖼️ UI Pages
-
-| Page              | Description                        |
-|-------------------|------------------------------------|
-| `/register`       | User registration                  |
-| `/login`          | User login                         |
-| `/dashboard`      | User dashboard (create/view posts) |
-| `/posts`          | Feed showing all user posts        |
-| `/posts/{id}/edit`| Edit a specific post               |
 
 ---
 

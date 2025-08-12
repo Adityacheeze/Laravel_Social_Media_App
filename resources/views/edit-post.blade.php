@@ -21,11 +21,15 @@
             @csrf
             @method('PUT')
             <label for="post_title" class="form-label">Title</label>
-            <input type="text" name="title" value="{{ $post->title }}" class="form-control" id="post_title" placeholder="post title...">
+            <input type="text" name="title" value="{{ $post->title }}" class="form-control" id="post_title"
+                placeholder="post title...">
             <label for="post_body" class="form-label">Body</label>
             <textarea class="form-control" name="body" id="post_body" placeholder="post content...">{{ $post->body }}</textarea>
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center gap-2">
                 <button class="p-2 btn btn-success mt-2">Save Changes</button>
+                <a href="{{ URL::to('/') }}">
+                    <div class="btn btn-warning p-2 mt-2">Back to home</div>
+                </a>
             </div>
         </form>
     </div>

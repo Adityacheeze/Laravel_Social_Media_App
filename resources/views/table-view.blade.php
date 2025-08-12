@@ -59,9 +59,9 @@
     <table class="table table-striped table-hover m-0">
         <thead>
             <tr class="border border-black">
-                <th class="col-index" valign="middle">#</th>
-                <th class="col-name" valign="middle">Name</th>
-                <th class="col-email" valign="middle">Email</th>
+                <th class="col-index">#</th>
+                <th class="col-name">Name</th>
+                <th class="col-email">Email</th>
                 <th>Posts</th>
             </tr>
         </thead>
@@ -69,9 +69,9 @@
             @php $i = 1; @endphp
             @foreach ($users as $user)
                 <tr>
-                    <td class="col-index">{{ $i++ }}</td>
-                    <td class="col-name">{{ $user->name }}</td>
-                    <td class="col-email">{{ $user->email }}</td>
+                    <td class="col-index" valign="middle">{{ $i++ }}</td>
+                    <td class="col-name" valign="middle">{{ $user->name }}</td>
+                    <td class="col-email" valign="middle">{{ $user->email }}</td>
                     <td>
                         <table class="table table-striped table-hover nested-table">
                             <tbody>
