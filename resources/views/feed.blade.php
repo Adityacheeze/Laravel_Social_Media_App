@@ -56,8 +56,8 @@
                 </div>
             </div>
             <!-- Modal -->
-            <div class="modal fade" id="{{ $index }}"
-                tabindex="-1" aria-labelledby="{{ $index }}Label" aria-hidden="true">
+            <div class="modal fade" id="{{ $index }}" tabindex="-1" aria-labelledby="{{ $index }}Label"
+                aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -68,7 +68,7 @@
                         <div class="modal-body">
                             <h6 class="card-subtitle mb-2 text-body-secondary text-center">By :
                                 {{ $post->user->name }}</h6>
-                            <p class="card-text">{{ $post['body'] }}</p>  
+                            <p class="card-text">{{ $post['body'] }}</p>
                         </div>
                     </div>
                 </div>

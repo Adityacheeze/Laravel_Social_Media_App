@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PostController extends Controller
 {
@@ -76,5 +77,14 @@ class PostController extends Controller
             $users = User::all();
         }
         return view('table-view', ['posts' => $posts, 'user' => $user, 'users' => $users]);
+    }
+
+    public function viewPdf()
+    {
+        $users = User::with('userPosts')->get();
+
+        $pdf = Pdf::loadView('table-view', compact('users'));
+           
+        return $pdf->stream('posts.pdf');
     }
 }

@@ -44,3 +44,4 @@ Route::delete('/delete-post/{post}', [PostController::class, 'deletePost']);
 Route::get('/table-details', [PostController::class, 'viewTable']);
 Route::get('/temp-page', [PostController::class, 'handleTempPage']);
 Route::get('/feed-page', [PostController::class, 'handleFeedRequest']);
+Route::get('/posts/pdf', [PostController::class, 'viewPdf'])->name('posts.pdf');

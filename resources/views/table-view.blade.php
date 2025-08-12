@@ -89,7 +89,7 @@
         </tbody>
     </table>
 
-
+    <a href="{{ route('posts.pdf') }}" class="btn btn-primary">View PDF</a>
 
 </body>
 
