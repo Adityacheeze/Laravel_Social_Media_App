@@ -1,0 +1,36 @@
+.nested-table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.nested-table td,
+.nested-table th {
+    padding: 0.4rem 0.6rem;
+    vertical-align: middle;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.col-index {
+    text-align: center;
+    width: 50px;
+}
+
+.col-name {
+    text-align: left;
+}
+
+.col-email {
+    text-align: left;
+}
+
+.col-title {
+    text-align: left;
+    width: 40%;
+}
+
+.col-body {
+    text-align: left;
+}

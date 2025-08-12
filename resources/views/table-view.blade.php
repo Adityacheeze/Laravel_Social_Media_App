@@ -55,51 +55,6 @@
             @endforeach
         </tbody>
     </table>
-    <style>
-        /* Make nested table take full width of parent cell */
-        .nested-table {
-            width: 100%;
-            margin: 0;
-            border-collapse: collapse;
-            /* removes double borders */
-            table-layout: fixed;
-            /* keeps columns consistent */
-        }
-
-        /* Ensure nested table inherits column alignment */
-        .nested-table td,
-        .nested-table th {
-            padding: 0.4rem 0.6rem;
-            vertical-align: middle;
-            text-align: left;
-            /* change to center or right if needed */
-            word-wrap: break-word;
-            /* prevents overflow */
-        }
-
-        /* Match column alignment with outer table */
-        .col-index {
-            text-align: center;
-            width: 50px;
-        }
-
-        .col-name {
-            text-align: left;
-        }
-
-        .col-email {
-            text-align: left;
-        }
-
-        .col-title {
-            text-align: left;
-            width: 40%;
-        }
-
-        .col-body {
-            text-align: left;
-        }
-    </style>
 
     <table class="table table-striped table-hover m-0">
         <thead>

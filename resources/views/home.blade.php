@@ -15,7 +15,7 @@
 
 <body>
     @auth
-      
+
         {{-- USER OPTIONS --}}
         <div class="d-flex justify-content-center p-2">
             <h3>{{ $user['name'] }} is Logged In</h3>
@@ -46,34 +46,6 @@
             </div>
             <button class="btn btn-danger close_user_info d-none">Close</button>
         </div>
-        <script>
-            $(document).ready(function() {
-                $(".show-user-info").click(function() {
-                    $.ajax({
-                        type: "GET",
-                        url: "{{ URL::to('temp-page') }}",
-                        success: function(response) {
-                            let user_data = response.data;
-                            $(".response_div").empty();
-                            $(".close_user_info").removeClass("d-none");
-                            for (let key in user_data) {
-                                $(".response_div").removeClass("d-none");
-                                $(".response_div").append("<p><strong>" + key + ":</strong> " +
-                                    user_data[key] + "</p>");
-
-                            }
-                        },
-                        error: function(xhr) {
-                            console.error("Error:", xhr);
-                        }
-                    });
-                });
-                $(".close_user_info").click(function() {
-                    $(".response_div").addClass("d-none");
-                    $(this).addClass("d-none");
-                })
-            });
-        </script>
         {{-- SHOW ERRORS --}}
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -96,13 +68,6 @@
                 </div>
             </form>
         </div>
-        <script>
-            $(document).ready(function() {
-                $(".edit-profile-btn").click(function() {
-                    $(".edit-profile").toggleClass("d-none");
-                })
-            })
-        </script>
         {{-- UPLOAD PDF --}}
         <div class="m-3 border border-3 border-black p-3 upload-pdf">
             <h2 class="text-center">Upload a PDF</h2>
@@ -226,29 +191,11 @@
     @endauth
     {{-- SCRIPTS --}}
     <script>
-        $(document).ready(function() {
-            $(".delete_button").click(function() {
-                const toastEl = document.getElementById("deleteToast");
-                const toast = new bootstrap.Toast(toastEl, {
-                    delay: 3000
-                });
-                toast.show();
-            })
-        })
+        const routes = {
+            tempPage: "{{ URL::to('temp-page') }}",
+        };
     </script>
-    <script>
-        $(document).ready(function() {
-            $(".hide_btn").click(function() {
-                $(this).closest(".card").hide("slow");
-            })
-            $(".show_post_btn").click(function() {
-                $(".card").show("slow");
-            })
-            $(".hide_post_btn").click(function() {
-                $(".card").hide("slow");
-            })
-        })
-    </script>
+    <script src="{{ asset('public/scripts/home.js') }}"></script>
 </body>
 
 </html>
