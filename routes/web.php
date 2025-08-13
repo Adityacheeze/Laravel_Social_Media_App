@@ -42,6 +42,6 @@ Route::put('/edit-post/{post}', [PostController::class, 'updatePost']);
 Route::delete('/delete-post/{post}', [PostController::class, 'deletePost']);
 
 Route::get('/table-details', [PostController::class, 'viewTable']);
-Route::get('/temp-page', [PostController::class, 'handleTempPage']);
+Route::get('/show-user', [PostController::class, 'showUserDetails']);
 Route::get('/feed-page', [PostController::class, 'handleFeedRequest']);
-Route::get('/posts/pdf', [PostController::class, 'viewPdf'])->name('posts.pdf');
+Route::get('/posts/pdf', [PostController::class, 'viewPdf']);

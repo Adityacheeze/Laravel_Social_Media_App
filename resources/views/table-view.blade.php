@@ -147,7 +147,7 @@
         <h1>ALL Post Details</h1>
         <div class="flex-center">
             <a href="{{ URL::to('feed-page') }}" class="btn btn-success">Back to feed</a>
-            <a href="{{ route('posts.pdf') }}" class="btn btn-primary">View PDF</a>
+            <a href="{{ URL::to('/posts/pdf') }}" class="btn btn-primary">View PDF</a>
         </div>
     </div>
 

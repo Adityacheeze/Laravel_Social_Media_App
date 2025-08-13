@@ -192,7 +192,7 @@
     {{-- SCRIPTS --}}
     <script>
         const routes = {
-            tempPage: "{{ URL::to('temp-page') }}",
+            showUserDetailsAPI: "{{ URL::to('show-user') }}",
         };
     </script>
     <script src="{{ asset('public/scripts/home.js') }}"></script>

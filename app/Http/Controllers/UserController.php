@@ -22,11 +22,13 @@ class UserController extends Controller
         auth()->login($user);
         return redirect("/");
     }
+    
     public function logout()
     {
         auth()->logout();
         return redirect("/");
     }
+
     public function login(Request $request)
     {
         $incommingFields = $request->validate([
@@ -38,6 +40,7 @@ class UserController extends Controller
         }
         return redirect("/");
     }
+
     public function editProfile(Request $request)
     {
         $incomingFields = $request->validate([
@@ -52,6 +55,7 @@ class UserController extends Controller
         $user->save();
         return redirect("/");
     }
+
     public function uploadPDF(Request $request)
     {
         $incomingFields = $request->validate([
@@ -65,6 +69,7 @@ class UserController extends Controller
         $user->save();
         return redirect("/");
     }
+
     public function viewPDF()
     {
         $user = auth()->user();

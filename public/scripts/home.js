@@ -2,9 +2,10 @@ $(document).ready(function () {
     $(".show-user-info").click(function () {
         $.ajax({
             type: "GET",
-            url: routes.tempPage,
+            url: routes.showUserDetailsAPI,
             success: function (response) {
                 let user_data = response.data;
+                console.log(response.data);
                 $(".response_div").empty();
                 $(".close_user_info").removeClass("d-none");
                 for (let key in user_data) {

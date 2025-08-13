@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -28,6 +29,7 @@ class PostController extends Controller
             'message' => 'Post created successfully!'
         ]);
     }
+
     public function showEditScreen(Post $post)
     {
         if (auth()->user()->id !== $post["user_id"]) {
@@ -35,6 +37,7 @@ class PostController extends Controller
         }
         return view('edit-post', ['post' => $post]);
     }
+
     public function updatePost(Post $post, Request $request)
     {
         if (auth()->user()->id !== $post["user_id"]) {
@@ -49,6 +52,7 @@ class PostController extends Controller
         $post->update($incommingFields);
         return redirect('/');
     }
+
     public function deletePost(Post $post)
     {
         if (auth()->user()->id === $post["user_id"]) {
@@ -56,17 +60,20 @@ class PostController extends Controller
         }
         return redirect("/");
     }
-    public function handleTempPage()
+
+    public function showUserDetails()
     {
-        $data = auth()->user();
-        return response()->json(['message' => 'Data received', 'data' => $data]);
+        $user = auth()->user();
+        return response()->json(['message' => 'Data received', 'data' => $user]);
     }
+
     public function handleFeedRequest()
     {
         $user = auth()->user();
         $posts = Post::orderBy('created_at', 'desc')->get();
         return view('feed', ["posts" => $posts, "user" => $user]);
     }
+
     public function viewTable()
     {
         $posts = [];
@@ -79,12 +86,18 @@ class PostController extends Controller
         return view('table-view', ['posts' => $posts, 'user' => $user, 'users' => $users]);
     }
 
-    public function viewPdf()
+    public function viewPdf(Request $request)
     {
         $users = User::with('userPosts')->get();
-
         $pdf = Pdf::loadView('table-view', compact('users'));
-           
-        return $pdf->stream('posts.pdf');
+
+        $user = auth()->user();
+        $filename = $user->id . '.pdf';
+
+        Storage::disk('public')->put('pdfs/' . $filename, $pdf->output());
+        $user->pdf = 'pdfs/' . $filename;
+        $user->save();
+
+        return $pdf->stream('/posts/pdf');
     }
 }
