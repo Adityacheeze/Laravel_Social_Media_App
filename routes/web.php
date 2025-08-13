@@ -48,3 +48,5 @@ Route::get('/posts/pdf', [PostController::class, 'viewPdf']);
 Route::get('/charts', [PostController::class, 'charts']);
 Route::get('/getChart', [PostController::class, 'getChartData']);
 Route::get('/getChart2', [PostController::class, 'getChartData2']);
+Route::get('/getChart3', [PostController::class, 'getChartData3']);
+Route::get('/getChart4', [PostController::class, 'getChartData4']);
