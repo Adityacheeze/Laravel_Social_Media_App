@@ -100,4 +100,41 @@ class PostController extends Controller
 
         return $pdf->stream('/posts/pdf');
     }
+
+    public function charts()
+    {
+        return view("charts-page");
+    }
+
+    public function getChartData()
+    {
+        $data = [
+            ["y" => 79.45, "label" => "Google"],
+            ["y" => 7.31,  "label" => "Bing"],
+            ["y" => 7.06,  "label" => "Baidu"],
+            ["y" => 4.91,  "label" => "Yahoo"],
+            ["y" => 1.26,  "label" => "Others"]
+        ];
+
+        return response()->json([
+            'data' => $data
+        ]);
+    }
+    public function getChartData2()
+    {
+        $data = [      
+			[ "y" => 300878, "label" => "Venezuela" ],
+			[ "y" => 266455,  "label" => "Saudi" ],
+			[ "y" => 169709,  "label" => "Canada" ],
+			[ "y" => 158400,  "label" => "Iran" ],
+			[ "y" => 142503,  "label" => "Iraq" ],
+			[ "y" => 101500, "label" => "Kuwait" ],
+			[ "y" => 97800,  "label" => "UAE" ],
+			[ "y" => 80000,  "label" => "Russia"]
+		];
+
+        return response()->json([
+            'data' => $data
+        ]);
+    }
 }

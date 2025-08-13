@@ -25,12 +25,17 @@
 
     <div class="d-flex flex-column align-items-center gap-4">
         <h1>Feed</h1>
-        <a href="{{ URL::to('/') }}">
-            <div class="btn btn-success">Back to home</div>
-        </a>
-        <a href="{{ URL::to('/table-details') }}">
-            <div class="btn btn-warning">see post details</div>
-        </a>
+        <div class="d-flex gap-2">
+            <a href="{{ URL::to('/') }}">
+                <div class="btn btn-success">Back To Home</div>
+            </a>
+            <a href="{{ URL::to('/table-details') }}">
+                <div class="btn btn-warning">See Post Details</div>
+            </a>
+            <a href="{{ URL::to('/charts') }}">
+                <div class="btn btn-info">Chart Gallery</div>
+            </a>
+        </div>
         @foreach ($posts as $index => $post)
             <div class="card mb-2 border border-1 border-black p-2 bg-info bg-gradient" style="width: 25rem;">
                 <div class="d-flex flex-column justify-content-center align-items-center gap-3">

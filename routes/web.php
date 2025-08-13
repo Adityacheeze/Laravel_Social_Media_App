@@ -45,3 +45,6 @@ Route::get('/table-details', [PostController::class, 'viewTable']);
 Route::get('/show-user', [PostController::class, 'showUserDetails']);
 Route::get('/feed-page', [PostController::class, 'handleFeedRequest']);
 Route::get('/posts/pdf', [PostController::class, 'viewPdf']);
+Route::get('/charts', [PostController::class, 'charts']);
+Route::get('/getChart', [PostController::class, 'getChartData']);
+Route::get('/getChart2', [PostController::class, 'getChartData2']);
