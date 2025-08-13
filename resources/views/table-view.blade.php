@@ -3,62 +3,191 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous">
-    </script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <title>All Post Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: white;
+            font-size: 14px;
+            margin: 10px;
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3173b8;
+        }
+        .btn-success:hover {
+            background-color: #3a804b;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            font-size: 14px;
+            table-layout: fixed; /* Ensures % widths work in PDF */
+        }
+
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 6px;
+            vertical-align: middle;
+            text-align: left;
+            word-break: break-word;
+        }
+
+        thead {
+            background-color: #f2f2f2;
+        }
+
+        /* Table striping */
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #eaeaea;
+        }
+
+        /* First Table Column Widths */
+        .first-table .col-index {
+            width: 5%;
+            text-align: center;
+        }
+
+        .first-table .col-name {
+            width: 12%;
+        }
+
+        .first-table .col-email {
+            width: 13%;
+        }
+
+        .first-table .col-title {
+            width: 35%;
+        }
+
+        .first-table .col-body {
+            width: 35%;
+        }
+
+        /* Second Table Column Widths */
+        .second-table .col-index {
+            width: 5%;
+            text-align: center;
+        }
+
+        .second-table .col-name {
+            width: 12%;
+        }
+
+        .second-table .col-email {
+            width: 13%;
+        }
+
+        /* Nested Table inside Second Table */
+        .nested-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .nested-table td {
+            border: 1px solid black;
+            padding: 4px;
+            vertical-align: top;
+            word-break: break-word;
+        }
+
+        .nested-table .col-title {
+            width: 35%;
+        }
+
+        .nested-table .col-body {
+            width: 65%;
+        }
+        .flex-center {
+            display: flex;
+            text-align: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="d-flex flex-column align-items-center gap-2 m-4">
+
+    <div class="container">
         <h1>ALL Post Details</h1>
-        <a href="{{ URL::to('feed-page') }}">
-            <div class="btn btn-success">Back to feed</div>
-        </a>
+        <div class="flex-center">
+            <a href="{{ URL::to('feed-page') }}" class="btn btn-success">Back to feed</a>
+            <a href="{{ route('posts.pdf') }}" class="btn btn-primary">View PDF</a>
+        </div>
     </div>
-    <table class="table table-striped table-hover">
+
+    <!-- First Table -->
+    <table class="first-table">
         <thead>
-            <tr class="border border-black">
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Post Title</th>
-                <th scope="col">Post Body</th>
+            <tr>
+                <th class="col-index">#</th>
+                <th class="col-name">Name</th>
+                <th class="col-email">Email</th>
+                <th class="col-title">Post Title</th>
+                <th class="col-body">Post Body</th>
             </tr>
         </thead>
         <tbody>
             @php $i = 1; @endphp
-
             @foreach ($users as $user)
                 @php
                     $posts = $user->userPosts()->get();
                     $rowspan = $posts->count();
                 @endphp
-
                 @foreach ($posts as $index => $post)
-                    <tr class="border border-black">
+                    <tr>
                         @if ($index === 0)
-                            <td rowspan="{{ $rowspan }}" valign="middle">{{ $i++ }}</td>
-                            <td rowspan="{{ $rowspan }}" valign="middle">{{ $user->name }}</td>
-                            <td rowspan="{{ $rowspan }}" valign="middle">{{ $user->email }}</td>
+                            <td class="col-index" rowspan="{{ $rowspan }}">{{ $i++ }}</td>
+                            <td class="col-name" rowspan="{{ $rowspan }}">{{ $user->name }}</td>
+                            <td class="col-email" rowspan="{{ $rowspan }}">{{ $user->email }}</td>
                         @endif
-
-                        <td>{{ $post->title }}</td>
-                        <td>{{ $post->body }}</td>
+                        <td class="col-title">{{ $post->title }}</td>
+                        <td class="col-body">{{ $post->body }}</td>
                     </tr>
                 @endforeach
             @endforeach
         </tbody>
     </table>
 
-    <table class="table table-striped table-hover m-0">
+    <!-- Second Table -->
+    <table class="second-table">
         <thead>
-            <tr class="border border-black">
+            <tr>
                 <th class="col-index">#</th>
                 <th class="col-name">Name</th>
                 <th class="col-email">Email</th>
@@ -69,11 +198,11 @@
             @php $i = 1; @endphp
             @foreach ($users as $user)
                 <tr>
-                    <td class="col-index" valign="middle">{{ $i++ }}</td>
-                    <td class="col-name" valign="middle">{{ $user->name }}</td>
-                    <td class="col-email" valign="middle">{{ $user->email }}</td>
+                    <td class="col-index">{{ $i++ }}</td>
+                    <td class="col-name">{{ $user->name }}</td>
+                    <td class="col-email">{{ $user->email }}</td>
                     <td>
-                        <table class="table table-striped table-hover nested-table">
+                        <table class="nested-table">
                             <tbody>
                                 @foreach ($user->userPosts as $post)
                                     <tr>
@@ -89,8 +218,7 @@
         </tbody>
     </table>
 
-    <a href="{{ route('posts.pdf') }}" class="btn btn-primary">View PDF</a>
+    
 
 </body>
-
 </html>
