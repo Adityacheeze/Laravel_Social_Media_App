@@ -76,19 +76,26 @@ class PostController extends Controller
 
     public function viewTable()
     {
-        $posts = [];
-        $user = "";
         if (auth()->check()) {
-            $posts = auth()->user()->userPosts()->latest()->get();
-            $user = auth()->user();
-            $users = User::all();
+            $users = User::all()->toArray();
+            $i = 0;
+            foreach ($users as $user) {
+                $users[$i]['posts'] = Post::where('user_id', $user['id'])->get()->toArray();
+                $i++;
+            }
         }
-        return view('table-view', ['posts' => $posts, 'user' => $user, 'users' => $users]);
+        return view('table-view', ['users' => $users]);
     }
 
     public function viewPdf(Request $request)
     {
-        $users = User::with('userPosts')->get();
+        $users = User::all()->toArray();
+        $i = 0;
+        foreach ($users as $user) {
+            $users[$i]['posts'] = Post::where('user_id', $user['id'])->get()->toArray();
+            $i++;
+        }
+
         $pdf = Pdf::loadView('table-view', compact('users'));
 
         $user = auth()->user();
@@ -275,7 +282,42 @@ class PostController extends Controller
             ],
             [
                 "x" => 'TEAM C',
-                "y" => [23, 48]
+                "y" => [23, 48],
+            ],
+            [
+                "x" => 'TEAM D',
+                "y" => [0, 78]
+            ]
+        ];
+        $data2 = [
+            [
+                "x" => 'TEAM A',
+                "y" => [23, 45]
+            ],
+            [
+                "x" => 'TEAM B',
+                "y" => [78, 99]
+            ],
+            [
+                "x" => 'TEAM C',
+                "y" => [3, 37],
+            ],
+            [
+                "x" => 'TEAM D',
+                "y" => [58, 83]
+            ]
+        ];
+
+        return response()->json([
+            'data' => [$data, $data2],
+        ]);
+    }
+    public function getChartData5()
+    {
+        $data = [
+            [
+                "x" => "",
+                "y" => [0, 78]
             ]
         ];
 

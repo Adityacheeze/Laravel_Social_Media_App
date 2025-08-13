@@ -109,9 +109,11 @@
             type: "GET",
             url: "{{ URL::to('getChart4') }}",
             success: function(response) {
-                $data = response.data;
+                var data1 = response.data[0];
+                var data2 = response.data[1];
                 var options = {
                     chart: {
+                        colors: ['#2E93fA', '#66DA26', '#546E7A'],
                         type: 'rangeBar',
                         height: "250px",
                         width: '100%',
@@ -128,12 +130,85 @@
                             barHeight: '10%'
                         }
                     },
-                    series: [{
-                        data: $data,
-                    }]
+                    xaxis: {
+                        min: 0,
+                        max: 100,
+                        tickAmount: 5,
+                        labels: {
+                            formatter: function(val) {
+                                return val + "%";
+                            }
+                        }
+                    },
+                    tooltip: {
+                        enabled: true
+                    },
+                    legend: {
+                        position: "bottom",
+                    },
+                    series: [
+                        {
+                            name: "name 1",
+                            data: data1,
+                        },
+                        {
+                            name: "name 2",
+                            data: data2,
+                        }
+                    ],
                 };
 
                 var chart = new ApexCharts(document.querySelector("#chartContainer4"), options);
+                chart.render();
+            },
+            error: function(xhr) {
+                console.error(xhr);
+            }
+        })
+        $.ajax({
+            type: "GET",
+            url: "{{ URL::to('getChart5') }}",
+            success: function(response) {
+                $data = response.data;
+                var options = {
+                    chart: {
+                        offsetX: -15,
+                        type: 'rangeBar',
+                        height: "100px",
+                        width: '100%',
+                        zoom: {
+                            enabled: false
+                        },
+                        toolbar: {
+                            show: false
+                        }
+                    },
+                    plotOptions: {
+                        bar: {
+                            horizontal: true,
+                            barHeight: '25%'
+                        }
+                    },
+                    xaxis: {
+                        min: 0,
+                        max: 100,
+                        tickAmount: 5,
+                        labels: {
+                            formatter: function(val) {
+                                return val + "%";
+                            }
+                        }
+                    },
+                    tooltip: {
+                        enabled: true
+                    },
+                    series: [{
+                        data: $data,
+                    }],
+                    colors: ['#FF5733'],
+                };
+
+                var chart = new ApexCharts(document.querySelector("#chartContainer5"), options);
                 chart.render();
             },
             error: function(xhr) {
@@ -148,6 +223,11 @@
         <div class="row m-3">
             <h1 class="text-center">CHART GALLERY</h1>
         </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a href="{{ URL::to('/feed-page') }}">
+                <div class="btn btn-info p-2 m-2">Back To Feed</div>
+            </a>
+        </div>
         <div class="row justify-content-center">
             <div id="chartContainer" class="col-md-6 col-12 mb-3" style="height: 300px;"></div>
             <div id="chartContainer2" class="col-md-6 col-12 mb-3" style="height: 300px;"></div>
@@ -155,6 +235,7 @@
     </div>
     <div id="chartContainer3" style="height: 300px; width: 100%;"></div>
     <div id="chartContainer4" style="height: 300px; width: 100%;"></div>
+    <div id="chartContainer5" style="height: 300px; width: 100%;"></div>
 
 </body>
 

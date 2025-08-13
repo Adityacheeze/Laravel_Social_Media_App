@@ -51,7 +51,7 @@
             width: 100%;
             margin-bottom: 20px;
             font-size: 14px;
-            table-layout: fixed; /* Ensures % widths work in PDF */
+            table-layout: fixed;
         }
 
         th,
@@ -166,18 +166,18 @@
             @php $i = 1; @endphp
             @foreach ($users as $user)
                 @php
-                    $posts = $user->userPosts()->get();
-                    $rowspan = $posts->count();
+                    // $posts = $user->userPosts()->get();
+                    $rowspan = count($user["posts"]);
                 @endphp
-                @foreach ($posts as $index => $post)
+                @foreach ($user["posts"] as $index => $post)
                     <tr>
                         @if ($index === 0)
                             <td class="col-index" rowspan="{{ $rowspan }}">{{ $i++ }}</td>
-                            <td class="col-name" rowspan="{{ $rowspan }}">{{ $user->name }}</td>
-                            <td class="col-email" rowspan="{{ $rowspan }}">{{ $user->email }}</td>
+                            <td class="col-name" rowspan="{{ $rowspan }}">{{ $user["name"] }}</td>
+                            <td class="col-email" rowspan="{{ $rowspan }}">{{ $user["email"] }}</td>
                         @endif
-                        <td class="col-title">{{ $post->title }}</td>
-                        <td class="col-body">{{ $post->body }}</td>
+                        <td class="col-title">{{ $post["title"] }}</td>
+                        <td class="col-body">{{ $post["body"] }}</td>
                     </tr>
                 @endforeach
             @endforeach
@@ -199,15 +199,15 @@
             @foreach ($users as $user)
                 <tr>
                     <td class="col-index">{{ $i++ }}</td>
-                    <td class="col-name">{{ $user->name }}</td>
-                    <td class="col-email">{{ $user->email }}</td>
+                    <td class="col-name">{{ $user["name"] }}</td>
+                    <td class="col-email">{{ $user["email"] }}</td>
                     <td>
                         <table class="nested-table">
                             <tbody>
-                                @foreach ($user->userPosts as $post)
+                                @foreach ($user["posts"] as $post)
                                     <tr>
-                                        <td class="col-title">{{ $post->title }}</td>
-                                        <td class="col-body">{{ $post->body }}</td>
+                                        <td class="col-title">{{ $post["title"] }}</td>
+                                        <td class="col-body">{{ $post["body"] }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -217,8 +217,6 @@
             @endforeach
         </tbody>
     </table>
-
-    
 
 </body>
 </html>
