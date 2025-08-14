@@ -166,7 +166,6 @@
             @php $i = 1; @endphp
             @foreach ($users as $user)
                 @php
-                    // $posts = $user->userPosts()->get();
                     $rowspan = count($user["posts"]);
                 @endphp
                 @foreach ($user["posts"] as $index => $post)

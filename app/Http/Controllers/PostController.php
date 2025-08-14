@@ -30,16 +30,15 @@ class PostController extends Controller
         ]);
     }
 
-    public function showEditScreen(Post $post)
-    {
-        if (auth()->user()->id !== $post["user_id"]) {
-            return redirect("/");
-        }
-        return view('edit-post', ['post' => $post]);
-    }
-
     public function updatePost(Post $post, Request $request)
     {
+        if ($request->isMethod('get')) {
+            if (auth()->user()->id !== $post["user_id"]) {
+                return redirect("/");
+            }
+            return view('edit-post', ['post' => $post]);
+        }
+
         if (auth()->user()->id !== $post["user_id"]) {
             return redirect("/");
         }
@@ -50,7 +49,10 @@ class PostController extends Controller
         $incommingFields['title'] = strip_tags($incommingFields['title']);
         $incommingFields['body'] = strip_tags($incommingFields['body']);
         $post->update($incommingFields);
-        return redirect('/');
+        return  response()->json([
+            'success' => true,
+            'message' => 'Post edited successfully!'
+        ]);
     }
 
     public function deletePost(Post $post)

@@ -17,22 +17,41 @@
 <body>
     <div class="m-3 border border-3 border-black p-3">
         <h2 class="text-center">Edit Post</h2>
-        <form action="{{ URL::to('edit-post/' . $post->id) }}" method="POST">
+        <form>
             @csrf
-            @method('PUT')
             <label for="post_title" class="form-label">Title</label>
             <input type="text" name="title" value="{{ $post->title }}" class="form-control" id="post_title"
                 placeholder="post title...">
             <label for="post_body" class="form-label">Body</label>
             <textarea class="form-control" name="body" id="post_body" placeholder="post content...">{{ $post->body }}</textarea>
             <div class="d-flex justify-content-center gap-2">
-                <button class="p-2 btn btn-success mt-2">Save Changes</button>
+                <button class="p-2 btn btn-success mt-2 edit-post">Save Changes</button>
                 <a href="{{ URL::to('/') }}">
                     <div class="btn btn-warning p-2 mt-2">Back to home</div>
                 </a>
             </div>
+            {{-- TOAST FOR EDIT POST --}}
+            <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+                <div id="editPostToast" class="toast align-items-center text-bg-success border-0" role="alert"
+                    aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            Changes Saved!
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
+    <script>
+        const routes = {
+            editPost: "{{ URL::to('edit-post/' . $post->id) }}",
+            homePage: "{{ URL::to('/') }}"
+        };
+    </script>
+    <script src="{{ asset('public/scripts/edit-post.js') }}"></script>
 </body>
 
 </html>

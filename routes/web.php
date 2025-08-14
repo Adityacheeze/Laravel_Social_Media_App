@@ -37,8 +37,7 @@ Route::get('/view-pdf', [UserController::class, 'viewPDF']);
 
 // POST CONTROLLER ROUTES
 Route::match(['get', 'post'], '/create-post', [PostController::class, 'createPost']);
-Route::get('/edit-post/{post}', [PostController::class, 'showEditScreen']);
-Route::put('/edit-post/{post}', [PostController::class, 'updatePost']);
+Route::match(['get', 'post'], '/edit-post/{post}', [PostController::class, 'updatePost']);
 Route::delete('/delete-post/{post}', [PostController::class, 'deletePost']);
 
 Route::get('/table-details', [PostController::class, 'viewTable']);
