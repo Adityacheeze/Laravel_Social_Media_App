@@ -53,11 +53,11 @@
                         <p class="card-text">Created at : {{ $post['created_at'] }}</p>
                         <p class="card-text">Updated at : {{ $post['updated_at'] }}</p>
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                            data-bs-target="#{{ $index }}">
-                            View Full Post
-                        </button>
                     </div>
+                    <button type="button" class="btn btn-success mb-2" data-bs-toggle="modal"
+                        data-bs-target="#{{ $index }}">
+                        View Full Post
+                    </button>
                 </div>
             </div>
             <!-- Modal -->

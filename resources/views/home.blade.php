@@ -108,17 +108,13 @@
                                         class="img-fluid d-block rounded-circle border border-1 border-black shadow object-fit-cover">
                                 </div>
                             </div>
-                            <h6 class="card-subtitle mb-2 text-body-secondary text-center">By {{ $post->user->name }}</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary text-center">By {{ $user->name }}</h6>
                             <p class="card-text">{{ $post['body'] }}</p>
                             <div class="d-flex flex-row justify-content-center align-items-center gap-1">
                                 <a class="card-link p-2 btn btn-success border border-black border-1"
                                     href="{{ URL::to('edit-post/' . $post->id) }}">EDIT</a>
-                                <form class="card-link" action="{{ URL::to('delete-post/' . $post->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button
-                                        class="p-2 btn btn-danger delete_button border border-black border-1">Delete</button>
-                                </form>
+                                <a href="{{ URL::to('delete-post/' . $post->id) }}"
+                                    class="p-2 btn btn-danger delete_button border border-black border-1">DELETE</a>
                                 <div class="card-link p-2 btn btn-warning hide_btn border border-black border-1">HIDE</div>
                             </div>
                         </div>

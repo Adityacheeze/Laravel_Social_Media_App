@@ -73,6 +73,11 @@ class PostController extends Controller
     {
         $user = auth()->user();
         $posts = Post::orderBy('created_at', 'desc')->get();
+        $i = 0;
+        foreach ($posts as $post) {
+            $posts[$i]['user'] = User::where('id', $post['user_id'])->first();
+            $i++;
+        }
         return view('feed', ["posts" => $posts, "user" => $user]);
     }
 
