@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChartController;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -44,10 +45,12 @@ Route::get('/table-details', [PostController::class, 'viewTable']);
 Route::get('/show-user', [PostController::class, 'showUserDetails']);
 Route::get('/feed-page', [PostController::class, 'handleFeedRequest']);
 Route::get('/posts/pdf', [PostController::class, 'viewPdf']);
-Route::get('/charts', [PostController::class, 'charts']);
 
-Route::get('/getChart', [PostController::class, 'getChartData']);
-Route::get('/getChart2', [PostController::class, 'getChartData2']);
-Route::get('/getChart3', [PostController::class, 'getChartData3']);
-Route::get('/getChart4', [PostController::class, 'getChartData4']);
-Route::get('/getChart5', [PostController::class, 'getChartData5']);
+// CHART CONTROLLER ROUTES
+Route::get('/charts', [ChartController::class, 'charts']);
+
+Route::get('/getChart', [ChartController::class, 'getChartData']);
+Route::get('/getChart2', [ChartController::class, 'getChartData2']);
+Route::get('/getChart3', [ChartController::class, 'getChartData3']);
+Route::get('/getChart4', [ChartController::class, 'getChartData4']);
+Route::get('/getChart5', [ChartController::class, 'getChartData5']);
