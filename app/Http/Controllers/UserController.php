@@ -3,26 +3,19 @@
 namespace App\Http\Controllers;
 
 use URL;
+use App\Models\Post;
+use App\Models\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-
-use Illuminate\Foundation\Auth\User;
 
 class UserController extends Controller
 {
     public function register(Request $request)
     {
-        $incommingFields = $request->validate([
-            "name" => ["required", "min:3", "max:10", Rule::unique("users", "name")],
-            "email" => ["required", "email", Rule::unique("users", "email")],
-            "password" => ["required", "min:8", "max:200"],
-        ]);
-        $incommingFields["password"] = bcrypt($incommingFields["password"]);
-        $user = User::create($incommingFields);
-        auth()->login($user);
-        return redirect("/");
+        User::createUser($request);
     }
-    
+
     public function logout()
     {
         auth()->logout();
@@ -55,6 +48,39 @@ class UserController extends Controller
         $user->save();
         return redirect("/");
     }
+    public function hidePost(Request $request)
+    {
+
+        $validated = $request->validate([
+            'post_ids' => 'required|array',
+            'post_ids.*' => 'integer|exists:posts,id'
+        ]);
+
+        Post::whereIn('id', $validated['post_ids'])
+            ->update(['visibility' => 1]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Selected posts have been hidden successfully!'
+        ]);
+    }
+    public function unhidePost(Request $request)
+    {
+
+        $validated = $request->validate([
+            'post_ids' => 'required|array',
+            'post_ids.*' => 'integer|exists:posts,id'
+        ]);
+
+        Post::whereIn('id', $validated['post_ids'])
+            ->update(['visibility' => 0]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Selected posts have been unhidden successfully!'
+        ]);
+    }
+
 
     public function uploadPDF(Request $request)
     {

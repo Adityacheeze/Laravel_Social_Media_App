@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Post;
+use Illuminate\Validation\Rule;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,7 +20,7 @@ class User extends Authenticatable
      */
     protected $table = "users";
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'pdf', 'photoURL', 'role',
     ];
 
     /**
@@ -41,5 +42,17 @@ class User extends Authenticatable
     ];
     public function userPosts() {
         return $this->hasMany(Post::class, 'user_id');
+    }
+    public static function createUser($request) {
+        // dd($request);
+         $incommingFields = $request->validate([
+            "name" => ["required", "min:3", "max:10", Rule::unique("users", "name")],
+            "email" => ["required", "email", Rule::unique("users", "email")],
+            "password" => ["required", "min:4", "max:200"],
+        ]);
+        $incommingFields["password"] = bcrypt($incommingFields["password"]);
+        $user = User::create($incommingFields);
+        auth()->login($user);
+        return redirect("/");
     }
 }

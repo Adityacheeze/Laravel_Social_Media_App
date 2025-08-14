@@ -34,6 +34,8 @@ Route::post('/login', [UserController::class, 'login']);
 Route::post('/edit-profile', [UserController::class, 'editProfile']);
 Route::post('/upload-pdf', [UserController::class, 'uploadPDF']);
 Route::get('/view-pdf', [UserController::class, 'viewPDF']);
+Route::post('/hide-posts', [UserController::class, 'hidePost']);
+Route::post('/unhide-posts', [UserController::class, 'unhidePost']);
 
 
 // POST CONTROLLER ROUTES
