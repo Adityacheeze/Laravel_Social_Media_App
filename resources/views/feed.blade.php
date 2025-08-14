@@ -74,7 +74,7 @@
             <h1>Hidden Posts</h1>
             @foreach ($posts as $index => $post)
                 @if ($post->visibility == 1)
-                    <div class="card mb-2 border border-1 border-black p-2 bg-info bg-gradient" style="width: 25rem;">
+                    <div class="card mb-2 border border-1 border-black p-2 bg-danger bg-gradient" style="width: 25rem;">
                         @if ($user->role == 2)
                             <input type="checkbox" name="unhidePost" class="unhidePost" id={{ $post['id'] }}>
                         @endif
@@ -176,67 +176,15 @@
         @endforeach
     </div>
     <script>
-        $(document).ready(function() {
-            $(".hidePostBtn").click(function() {
-                let selectedPosts = [];
-                $(".hidePost:checked").each(function() {
-                    selectedPosts.push($(this).attr("id"));
-                });
-                $.ajax({
-                    type: "POST",
-                    url: "{{ URL::to('/hide-posts') }}",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        post_ids: selectedPosts
-                    },
-                    success: function(response) {
-                        const toastE1 = document.getElementById("hidePostToast");
-                        const toast = new bootstrap.Toast(toastE1, {
-                            delay: 3000,
-                        });
-                        toast.show();
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1500);
-                    },
-                    error: function(xhr) {
-                        console.error(xhr);
-                    }
-                })
-            })
-            $(".showhiddenPostBtn").click(function() {
-                $(".hiddenPostContainer").toggleClass("d-none");
-                $(".unhidePostBtn").toggleClass("d-none");
-            })
-            $(".unhidePostBtn").click(function() {
-                let selectedPosts = [];
-                $(".unhidePost:checked").each(function() {
-                    selectedPosts.push($(this).attr("id"));
-                });
-                $.ajax({
-                    type: "POST",
-                    url: "{{ URL::to('/unhide-posts') }}",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        post_ids: selectedPosts
-                    },
-                    success: function(response) {
-                        const toastE2 = document.getElementById("unhidePostToast");
-                        const toast = new bootstrap.Toast(toastE2, {
-                            delay: 3000,
-                        });
-                        toast.show();
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1500);
-                    },
-                    error: function(xhr) {
-                        console.error(xhr);
-                    }
-                })
-            })
-        })
+        const routes = {
+            hidePost: "{{ URL::to('hide-posts') }}",
+            unhidePost: "{{ URL::to('unhide-posts') }}",
+        };
+        const tokens = {
+            csrfToken: "{{ csrf_token() }}",
+        }
     </script>
+    <script src="{{ asset('public/scripts/feed.js') }}"></script>
 </body>
 
 </html>
