@@ -44,7 +44,6 @@ class User extends Authenticatable
         return $this->hasMany(Post::class, 'user_id');
     }
     public static function createUser($request) {
-        // dd($request);
          $incommingFields = $request->validate([
             "name" => ["required", "min:3", "max:10", Rule::unique("users", "name")],
             "email" => ["required", "email", Rule::unique("users", "email")],
@@ -53,6 +52,5 @@ class User extends Authenticatable
         $incommingFields["password"] = bcrypt($incommingFields["password"]);
         $user = User::create($incommingFields);
         auth()->login($user);
-        return redirect("/");
     }
 }

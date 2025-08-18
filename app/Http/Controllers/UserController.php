@@ -14,6 +14,7 @@ class UserController extends Controller
     public function register(Request $request)
     {
         User::createUser($request);
+        return redirect("/");
     }
 
     public function logout()
@@ -28,8 +29,23 @@ class UserController extends Controller
             "loginname" => "required",
             "loginpassword" => "required",
         ]);
-        if (auth()->attempt(["name" => $incommingFields["loginname"], "password" => $incommingFields["loginpassword"]])) {
-            $request->session()->regenerate();
+        $user = User::where("name", $incommingFields["loginname"])->first();
+        if ($user != null) {
+            if ($user->attempts >= 3) {
+                return back()->withErrors(['login' => "Invalid credentials",])->with('user', $user);
+                // return view("login", ["user" => $user]);
+            }
+            if (auth()->attempt(["name" => $incommingFields["loginname"], "password" => $incommingFields["loginpassword"]])) {
+                $request->session()->regenerate();
+                $user->attempts = 0;
+                $user->save();
+            } else {
+                $user->attempts = $user->attempts + 1;
+                $user->save();
+                return back()->withErrors([
+                    'loginname' => "Invalid credentials. Attempts left: " . (3 - $user->attempts)
+                ]);
+            }
         }
         return redirect("/");
     }
