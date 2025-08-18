@@ -23,31 +23,12 @@
     </div>
 
     {{-- TOAST FOR HIDE POST --}}
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-        <div id="hidePostToast" class="toast align-items-center text-bg-danger border-0" role="alert"
-            aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    Post Hidden Successfully!
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
+    @include('toasts/hide-post-toast');
+
     {{-- TOAST FOR UNHIDE POST --}}
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-        <div id="unhidePostToast" class="toast align-items-center text-bg-success border-0" role="alert"
-            aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    Post Unhidden Successfully!
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
+    @include('toasts/unhide-post-toast');
+   
+
     <div class="d-flex flex-column align-items-center gap-4">
         <h1>Feed</h1>
         <div class="d-flex gap-2">
@@ -72,108 +53,12 @@
         </div>
         <div class="hiddenPostContainer d-none">
             <h1>Hidden Posts</h1>
-            @foreach ($posts as $index => $post)
-                @if ($post->visibility == 1)
-                    <div class="card mb-2 border border-1 border-black p-2 bg-danger bg-gradient" style="width: 25rem;">
-                        @if ($user->role == 2)
-                            <input type="checkbox" name="unhidePost" class="unhidePost" id={{ $post['id'] }}>
-                        @endif
-                        <div class="d-flex flex-column justify-content-center align-items-center gap-3">
-                            <div class="card-body">
-                                <h5 class="card-title text-center">{{ $post['title'] }}</h5>
-                                <div class="position-absolute top-0 end-0 p-3">
-                                    <div class="ratio ratio-1x1" style="width:45px;">
-                                        <img src="{{ asset('storage/app/public/' . $post->user->photoURL) }}"
-                                            alt="user_profile_pic"
-                                            class="img-fluid d-block rounded-circle border border-1 border-black shadow object-fit-cover">
-                                    </div>
-                                </div>
-                                <h6 class="card-subtitle mb-2 text-body-secondary text-center">By :
-                                    {{ $post->user->name }}
-                                </h6>
-                                <p class="card-text">{{ $post['body'] }}</p>
-                                <p class="card-text">Created at : {{ $post['created_at'] }}</p>
-                                <p class="card-text">Updated at : {{ $post['updated_at'] }}</p>
-                                <!-- Button trigger modal -->
-                            </div>
-                            <button type="button" class="btn btn-success mb-2" data-bs-toggle="modal"
-                                data-bs-target="#{{ $index }}">
-                                View Full Post
-                            </button>
-                        </div>
-                    </div>
-                    <!-- Modal -->
-                    <div class="modal fade" id="{{ $index }}" tabindex="-1"
-                        aria-labelledby="{{ $index }}Label" aria-hidden="true">
-                        <div class="modal-dialog modal-lg modal-dialog modal-dialog-scrollable">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="card-title text-center">{{ $post['title'] }}</h4>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <h6 class="card-subtitle mb-2 text-body-secondary text-center">By :
-                                        {{ $post->user->name }}</h6>
-                                    <p class="card-text">{{ $post['body'] }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-            @endforeach
-            <h1>Not Hidden Posts</h1>
+            {{-- HIDDEN POSTS --}}
+            @include('hidden-posts')
+            <h1>Feed Posts</h1>
         </div>
-        @foreach ($posts as $index => $post)
-            @if ($post->visibility == 0)
-                <div class="card mb-2 border border-1 border-black p-2 bg-info bg-gradient" style="width: 25rem;">
-                    @if ($user->role == 2)
-                        <input type="checkbox" name="hidePost" class="hidePost" id={{ $post['id'] }}>
-                    @endif
-                    <div class="d-flex flex-column justify-content-center align-items-center gap-3">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">{{ $post['title'] }}</h5>
-                            <div class="position-absolute top-0 end-0 p-3">
-                                <div class="ratio ratio-1x1" style="width:45px;">
-                                    <img src="{{ asset('storage/app/public/' . $post->user->photoURL) }}"
-                                        alt="user_profile_pic"
-                                        class="img-fluid d-block rounded-circle border border-1 border-black shadow object-fit-cover">
-                                </div>
-                            </div>
-                            <h6 class="card-subtitle mb-2 text-body-secondary text-center">By :
-                                {{ $post->user->name }}
-                            </h6>
-                            <p class="card-text">{{ $post['body'] }}</p>
-                            <p class="card-text">Created at : {{ $post['created_at'] }}</p>
-                            <p class="card-text">Updated at : {{ $post['updated_at'] }}</p>
-                            <!-- Button trigger modal -->
-                        </div>
-                        <button type="button" class="btn btn-success mb-2" data-bs-toggle="modal"
-                            data-bs-target="#{{ $index }}">
-                            View Full Post
-                        </button>
-                    </div>
-                </div>
-                <!-- Modal -->
-                <div class="modal fade" id="{{ $index }}" tabindex="-1"
-                    aria-labelledby="{{ $index }}Label" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="card-title text-center">{{ $post['title'] }}</h4>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <h6 class="card-subtitle mb-2 text-body-secondary text-center">By :
-                                    {{ $post->user->name }}</h6>
-                                <p class="card-text">{{ $post['body'] }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-        @endforeach
+        {{-- UNHIDDEN POSTS --}}
+      @include('unhidden-posts');
     </div>
     <script>
         const routes = {
