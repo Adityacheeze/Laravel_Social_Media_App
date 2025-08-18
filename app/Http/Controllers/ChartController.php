@@ -11,7 +11,7 @@ class ChartController extends Controller
         return view("charts-page");
     }
 
-    public function getChartData()
+    public function getChartData1()
     {
         $data = [
             ["y" => 79.45, "label" => "Google"],

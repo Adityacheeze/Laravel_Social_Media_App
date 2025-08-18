@@ -51,7 +51,7 @@ Route::get('/posts/pdf', [PostController::class, 'viewPdf']);
 // CHART CONTROLLER ROUTES
 Route::get('/charts', [ChartController::class, 'charts']);
 
-Route::get('/getChart', [ChartController::class, 'getChartData']);
+Route::get('/getChart1', [ChartController::class, 'getChartData1']);
 Route::get('/getChart2', [ChartController::class, 'getChartData2']);
 Route::get('/getChart3', [ChartController::class, 'getChartData3']);
 Route::get('/getChart4', [ChartController::class, 'getChartData4']);
