@@ -60,20 +60,20 @@
         @endif
 
         {{-- Edit Profile --}}
-        @include('edit-profile');
+        @include('edit-profile')
 
         {{-- UPLOAD PDF --}}
-        @include('upload-pdf');
+        @include('upload-pdf')
 
         {{-- SHOW USER POSTS --}}
-        @include('user-post');
+        @include('user-post')
 
     @else
         <div class="d-flex flex-column align-items-center gap-4 m-3">
             <!-- Signup Form -->
-            @include('signup-form');
+            @include('signup-form')
             <!-- Login Form -->
-             @include('login-form');
+             @include('login-form')
         </div>
     @endauth
     {{-- SCRIPTS --}}

@@ -32,9 +32,9 @@
             </div>
         </form>
     </div>
-    
+
     {{-- TOAST FOR CREATE POST --}}
-    @include('toasts/create-post-toast');
+    @include('toasts/create-post-toast')
     <script>
         const routes = {
             createPost: "{{ URL::to('create-post') }}",

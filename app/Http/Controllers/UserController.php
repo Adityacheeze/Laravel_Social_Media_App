@@ -31,14 +31,14 @@ class UserController extends Controller
         ]);
         $user = User::where("name", $incommingFields["loginname"])->first();
         if ($user != null) {
-            if ($user->attempts >= 3) {
+            if ($user->attempts >= 2) {
                 return back()->withErrors(['login' => "Invalid credentials",])->with('user', $user);
-                // return view("login", ["user" => $user]);
             }
             if (auth()->attempt(["name" => $incommingFields["loginname"], "password" => $incommingFields["loginpassword"]])) {
                 $request->session()->regenerate();
                 $user->attempts = 0;
                 $user->save();
+                return redirect("/");
             } else {
                 $user->attempts = $user->attempts + 1;
                 $user->save();
@@ -47,7 +47,7 @@ class UserController extends Controller
                 ]);
             }
         }
-        return redirect("/");
+        return back()->withErrors(['loginname' => "Invalid credentials",]);
     }
 
     public function editProfile(Request $request)

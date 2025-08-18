@@ -23,10 +23,10 @@
     </div>
 
     {{-- TOAST FOR HIDE POST --}}
-    @include('toasts/hide-post-toast');
+    @include('toasts/hide-post-toast')
 
     {{-- TOAST FOR UNHIDE POST --}}
-    @include('toasts/unhide-post-toast');
+    @include('toasts/unhide-post-toast')
    
 
     <div class="d-flex flex-column align-items-center gap-4">
@@ -58,7 +58,7 @@
             <h1>Feed Posts</h1>
         </div>
         {{-- UNHIDDEN POSTS --}}
-      @include('unhidden-posts');
+      @include('unhidden-posts')
     </div>
     <script>
         const routes = {
