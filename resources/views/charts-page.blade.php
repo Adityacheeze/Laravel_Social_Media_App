@@ -31,6 +31,12 @@
             <div id="chartContainer2" class="col-md-6 col-12 mb-3" style="height: 300px;"></div>
         </div>
     </div>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" value="" id="checkNativeSwitch" switch>
+        <label class="form-check-label" for="checkNativeSwitch">
+            Change Data
+        </label>
+    </div>
     <div id="chartContainer3" style="height: 300px; width: 100%;"></div>
     <div id="chartContainer4" style="height: 300px; width: 100%;"></div>
     <script>
@@ -39,6 +45,9 @@
             chart2: "{{ URL::to('getChart2') }}",
             chart3: "{{ URL::to('getChart3') }}",
             chart4: "{{ URL::to('getChart4') }}",
+        };
+        const tokens = {
+            csrfToken: "{{ csrf_token() }}",
         };
     </script>
     <script src="{{ asset('public/scripts/charts-page.js') }}"></script>

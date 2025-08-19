@@ -53,6 +53,6 @@ Route::get('/charts', [ChartController::class, 'charts']);
 
 Route::get('/getChart1', [ChartController::class, 'getChartData1']);
 Route::get('/getChart2', [ChartController::class, 'getChartData2']);
-Route::get('/getChart3', [ChartController::class, 'getChartData3']);
+Route::post('/getChart3', [ChartController::class, 'getChartData3']);
 Route::get('/getChart4', [ChartController::class, 'getChartData4']);
 Route::get('/getChart5', [ChartController::class, 'getChartData5']);

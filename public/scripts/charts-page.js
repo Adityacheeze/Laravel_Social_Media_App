@@ -55,43 +55,54 @@ $(document).ready(function () {
             console.error(xhr);
         },
     });
-    $.ajax({
-        type: "GET",
-        url: routes.chart3,
-        success: function (response) {
-            $data = response.data;
-            var chart = new CanvasJS.Chart("chartContainer3", {
-                animationEnabled: true,
-                zoomEnabled: true,
-                theme: "light2",
-                title: {
-                    text: "Employment in Agriculture vs Agri-Land and Population",
-                },
-                axisX: {
-                    title: "Employment - Agriculture",
-                    suffix: "%",
-                    minimum: 0,
-                    maximum: 61,
-                    gridThickness: 1,
-                },
-                axisY: {
-                    title: "Agricultural Land (million sq.km)",
-                    suffix: "mn",
-                },
-                data: [
-                    {
-                        type: "bubble",
-                        toolTipContent:
-                            "<b>{name}</b><br/>Employment: {x}% <br/> Agri-Land: {y}mn sq. km<br/> Population: {z}mn",
-                        dataPoints: $data,
+    function loadChart($flagValue) {
+        $.ajax({
+            type: "POST",
+            url: routes.chart3,
+            data: {
+                _token: tokens.csrfToken,
+                flag: $flagValue,
+            },
+            success: function (response) {
+                $data = response.data;
+                var chart = new CanvasJS.Chart("chartContainer3", {
+                    animationEnabled: true,
+                    zoomEnabled: true,
+                    theme: "light2",
+                    title: {
+                        text: "Employment in Agriculture vs Agri-Land and Population",
                     },
-                ],
-            });
-            chart.render();
-        },
-        error: function (xhr) {
-            console.error(xhr);
-        },
+                    axisX: {
+                        title: "Employment - Agriculture",
+                        suffix: "%",
+                        minimum: 0,
+                        maximum: 100,
+                        gridThickness: 1,
+                    },
+                    axisY: {
+                        title: "Agricultural Land (million sq.km)",
+                        suffix: "mn",
+                    },
+                    data: [
+                        {
+                            type: "bubble",
+                            toolTipContent:
+                                "<b>{name}</b><br/>Employment: {x}% <br/> Agri-Land: {y}mn sq. km<br/> Population: {z}mn",
+                            dataPoints: $data,
+                        },
+                    ],
+                });
+                chart.render();
+            },
+            error: function (xhr) {
+                console.error(xhr);
+            },
+        });
+    }
+    loadChart(0);
+    $("#checkNativeSwitch").click(function () {
+        let flagValue = $(this).is(":checked") ? 1 : 0;
+        loadChart(flagValue);
     });
     $.ajax({
         type: "GET",
