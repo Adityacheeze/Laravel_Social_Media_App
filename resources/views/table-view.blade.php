@@ -31,7 +31,7 @@
             font-size: 14px;
             margin: 10px;
         }
-        
+
         .btn-success {
             background-color: #28a745;
         }
@@ -39,13 +39,15 @@
         .btn-primary {
             background-color: #007bff;
         }
-        
+
         .btn-primary:hover {
             background-color: #3173b8;
         }
+
         .btn-success:hover {
             background-color: #3a804b;
         }
+
         table {
             border-collapse: collapse;
             width: 100%;
@@ -133,10 +135,15 @@
         .nested-table .col-body {
             width: 65%;
         }
+
         .flex-center {
             display: flex;
             text-align: center;
             justify-content: center;
+        }
+
+        .hidden_post {
+            background: rgb(217, 31, 31);
         }
     </style>
 </head>
@@ -166,17 +173,22 @@
             @php $i = 1; @endphp
             @foreach ($users as $user)
                 @php
-                    $rowspan = count($user["posts"]);
+                    $rowspan = count($user['posts']);
                 @endphp
-                @foreach ($user["posts"] as $index => $post)
+                @foreach ($user['posts'] as $index => $post)
                     <tr>
                         @if ($index === 0)
                             <td class="col-index" rowspan="{{ $rowspan }}">{{ $i++ }}</td>
-                            <td class="col-name" rowspan="{{ $rowspan }}">{{ $user["name"] }}</td>
-                            <td class="col-email" rowspan="{{ $rowspan }}">{{ $user["email"] }}</td>
+                            <td class="col-name" rowspan="{{ $rowspan }}">{{ $user['name'] }}</td>
+                            <td class="col-email" rowspan="{{ $rowspan }}">{{ $user['email'] }}</td>
                         @endif
-                        <td class="col-title">{{ $post["title"] }}</td>
-                        <td class="col-body">{{ $post["body"] }}</td>
+                        @if ($post['visibility'] == 0)
+                            <td class="col-title">{{ $post['title'] }}</td>
+                            <td class="col-body">{{ $post['body'] }}</td>
+                        @else
+                            <td class="col-title hidden_post">{{ $post['title'] }}</td>
+                            <td class="col-body hidden_post">{{ $post['body'] }}</td>
+                        @endif
                     </tr>
                 @endforeach
             @endforeach
@@ -198,15 +210,20 @@
             @foreach ($users as $user)
                 <tr>
                     <td class="col-index">{{ $i++ }}</td>
-                    <td class="col-name">{{ $user["name"] }}</td>
-                    <td class="col-email">{{ $user["email"] }}</td>
+                    <td class="col-name">{{ $user['name'] }}</td>
+                    <td class="col-email">{{ $user['email'] }}</td>
                     <td>
                         <table class="nested-table">
                             <tbody>
-                                @foreach ($user["posts"] as $post)
+                                @foreach ($user['posts'] as $post)
                                     <tr>
-                                        <td class="col-title">{{ $post["title"] }}</td>
-                                        <td class="col-body">{{ $post["body"] }}</td>
+                                        @if ($post['visibility'] == 0)
+                                            <td class="col-title">{{ $post['title'] }}</td>
+                                            <td class="col-body">{{ $post['body'] }}</td>
+                                        @else
+                                            <td class="col-title hidden_post">{{ $post['title'] }}</td>
+                                            <td class="col-body hidden_post">{{ $post['body'] }}</td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -218,4 +235,5 @@
     </table>
 
 </body>
+
 </html>
